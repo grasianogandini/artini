@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARTINI STUDIO — Biophilic Architecture Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0b;
+    --paper: #f5f0e8;
+    --sage: #7a8c6e;
+    --moss: #3d4f35;
+    --clay: #c4916a;
+    --fog: #d6cfc4;
+    --white: #fdfaf5;
+    --accent: #b8a47c;
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--moss);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--moss);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 48px;
+    mix-blend-mode: multiply;
+  }
+
+  .nav-logo {
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: var(--moss);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--moss);
+    padding: 10px 22px;
+    border: none;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px 48px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--sage);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 40px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--moss);
+  }
+
+  .hero-title .outline {
+    -webkit-text-stroke: 1px var(--ink);
+    color: transparent;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+    opacity: 0.65;
+    max-width: 380px;
+    margin-bottom: 56px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--moss);
+    padding: 16px 36px;
+    border: none;
+    cursor: none;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--ink);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--moss);
+    text-decoration: none;
+    border-bottom: 1px solid var(--sage);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-container {
+    position: absolute;
+    inset: 0;
+    background: var(--moss);
+    overflow: hidden;
+  }
+
+  /* Animated organic shape */
+  .hero-image-container::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 60% 80% at 30% 40%, #5a7a4a 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 70% 70%, #2d3d28 0%, transparent 50%),
+      radial-gradient(ellipse 80% 40% at 50% 20%, #6b8c5a 0%, transparent 50%);
+    animation: organicShift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes organicShift {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(3deg); }
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent 40%, rgba(14,14,11,0.3) 100%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-plan-preview {
+    position: absolute;
+    bottom: 60px;
+    left: 40px;
+    right: 40px;
+    background: rgba(245, 240, 232, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .plan-preview-info {
+    color: var(--paper);
+  }
+
+  .plan-preview-info .plan-name {
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .plan-preview-info .plan-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .plan-preview-price {
+    text-align: right;
+    color: var(--paper);
+  }
+
+  .plan-preview-price .price {
+    font-size: 32px;
+    font-weight: 300;
+  }
+
+  .plan-preview-price .price-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  /* Floating organic blobs hero bg */
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.12;
+  }
+  .blob-1 {
+    width: 500px; height: 500px;
+    background: var(--sage);
+    top: -100px; right: -100px;
+    animation: blobFloat 15s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 300px; height: 300px;
+    background: var(--clay);
+    bottom: 100px; left: 200px;
+    animation: blobFloat 10s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes blobFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, -30px) scale(1.05); }
+  }
+
+  /* Ticker */
+  .ticker-wrap {
+    background: var(--moss);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+  }
+
+  .ticker-item {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.7;
+    padding: 0 40px;
+  }
+  .ticker-item span {
+    color: var(--accent);
+    margin-right: 40px;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--fog);
+  }
+
+  .stat-item {
+    padding: 48px 48px;
+    border-right: 1px solid var(--fog);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--white); }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--moss);
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.5;
+  }
+
+  /* INTRO SECTION */
+  .section-intro {
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+    border-bottom: 1px solid var(--fog);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--sage);
+  }
+
+  .intro-text h2 {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .intro-text h2 em {
+    font-style: italic;
+    color: var(--moss);
+  }
+
+  .intro-text p {
+    font-size: 18px;
+    line-height: 1.8;
+    opacity: 0.65;
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  /* PLANS GRID */
+  .plans-section {
+    padding: 100px 48px;
+    border-bottom: 1px solid var(--fog);
+  }
+
+  .plans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+  }
+
+  .plans-header h2 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .plans-header h2 em { font-style: italic; color: var(--moss); }
+
+  .plans-filter {
+    display: flex;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--fog);
+    background: transparent;
+    color: var(--ink);
+    cursor: none;
+    transition: all 0.2s;
+    opacity: 0.6;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--moss);
+    color: var(--white);
+    border-color: var(--moss);
+    opacity: 1;
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .plan-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    background: var(--white);
+  }
+
+  .plan-card:first-child {
+    grid-row: span 2;
+  }
+
+  .plan-card-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .plan-card:first-child .plan-card-image {
+    aspect-ratio: unset;
+    height: 100%;
+    min-height: 400px;
+  }
+
+  .plan-card:hover .plan-card-image { transform: scale(1.04); }
+
+  /* Simulated images with gradients */
+  .plan-img-sim {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: block;
+    transition: transform 0.6s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .plan-card:first-child .plan-img-sim {
+    aspect-ratio: unset;
+    height: 100%;
+    min-height: 500px;
+  }
+  .plan-card:hover .plan-img-sim { transform: scale(1.04); }
+
+  .plan-img-sim.img-1 {
+    background:
+      radial-gradient(ellipse 70% 60% at 40% 60%, #5a7a4a 0%, #2d3d28 50%, #1a2415 100%);
+  }
+  .plan-img-sim.img-2 {
+    background:
+      radial-gradient(ellipse 80% 70% at 60% 40%, #8fa882 0%, #4a6040 50%, #2d3d28 100%);
+  }
+  .plan-img-sim.img-3 {
+    background:
+      radial-gradient(ellipse 60% 80% at 30% 70%, #c4916a 0%, #8c5a3a 50%, #4a2a1a 100%);
+  }
+  .plan-img-sim.img-4 {
+    background:
+      radial-gradient(ellipse 70% 50% at 70% 30%, #7a8c6e 0%, #3d4f35 60%, #1a2415 100%);
+  }
+  .plan-img-sim.img-5 {
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 50%, #b8a47c 0%, #7a6a4a 50%, #3a2a1a 100%);
+  }
+
+  /* Floor plan overlay in images */
+  .plan-img-sim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+  }
+
+  .plan-card-body {
+    padding: 24px 28px 28px;
+  }
+
+  .plan-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .plan-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    background: rgba(122, 140, 110, 0.1);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .plan-price {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--moss);
+  }
+
+  .plan-name {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .plan-specs {
+    display: flex;
+    gap: 16px;
+  }
+
+  .plan-spec {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  .plan-card-hover {
+    position: absolute;
+    inset: 0;
+    background: var(--moss);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .plan-card:hover .plan-card-hover { opacity: 1; }
+
+  .plan-card-hover h3 {
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--paper);
+    margin-bottom: 12px;
+  }
+
+  .plan-card-hover p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--paper);
+    opacity: 0.7;
+    margin-bottom: 28px;
+  }
+
+  .plan-card-hover .hover-btn {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--moss);
+    background: var(--paper);
+    padding: 12px 24px;
+    border: none;
+    cursor: none;
+    display: inline-block;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: background 0.2s;
+  }
+
+  /* DIFFERENTIALS */
+  .diff-section {
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--fog);
+  }
+
+  .diff-left {
+    padding-right: 80px;
+    border-right: 1px solid var(--fog);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .diff-left h2 {
+    font-size: clamp(40px, 4.5vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 40px;
+    letter-spacing: -0.02em;
+  }
+
+  .diff-left h2 em { font-style: italic; color: var(--moss); }
+
+  .diff-left p {
+    font-size: 17px;
+    line-height: 1.8;
+    opacity: 0.6;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  .diff-right {
+    padding-left: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .diff-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--fog);
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    align-items: start;
+    transition: padding-left 0.3s;
+  }
+  .diff-item:hover { padding-left: 12px; }
+  .diff-item:first-child { padding-top: 0; }
+  .diff-item:last-child { border-bottom: none; }
+
+  .diff-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--sage);
+    padding-top: 4px;
+  }
+
+  .diff-item h3 {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .diff-item p {
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 0.55;
+    font-weight: 300;
+  }
+
+  /* NEURO SECTION */
+  .neuro-section {
+    background: var(--ink);
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .neuro-visual {
+    position: relative;
+    height: 480px;
+  }
+
+  .neuro-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(122, 140, 110, 0.3);
+    animation: pulseRing 4s ease-in-out infinite;
+  }
+  .nc-1 { width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 0s; }
+  .nc-2 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 0.5s; }
+  .nc-3 { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 1s; }
+
+  @keyframes pulseRing {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.03); }
+  }
+
+  .neuro-dot {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--sage);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .neuro-line {
+    position: absolute;
+    background: rgba(122, 140, 110, 0.2);
+    top: 50%; left: 50%;
+    transform-origin: left center;
+    height: 1px;
+  }
+
+  .neuro-content {
+    color: var(--paper);
+  }
+
+  .neuro-content .section-label {
+    color: var(--sage);
+    margin-bottom: 32px;
+  }
+
+  .neuro-content h2 {
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .neuro-content h2 em {
+    font-style: italic;
+    color: var(--sage);
+  }
+
+  .neuro-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    opacity: 0.55;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  .neuro-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .neuro-pillar {
+    padding: 24px;
+    border: 1px solid rgba(122, 140, 110, 0.2);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .neuro-pillar:hover {
+    border-color: var(--sage);
+    background: rgba(122, 140, 110, 0.05);
+  }
+
+  .neuro-pillar .pillar-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .neuro-pillar h4 {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: var(--paper);
+  }
+
+  .neuro-pillar p {
+    font-size: 12px;
+    opacity: 0.45;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 100px 48px;
+    border-bottom: 1px solid var(--fog);
+    overflow: hidden;
+  }
+
+  .testimonials h2 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 64px;
+  }
+  .testimonials h2 em { font-style: italic; color: var(--moss); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .testimonial-card {
+    background: var(--white);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .testimonial-card:hover { background: var(--moss); }
+
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 120px;
+    font-family: var(--font-display);
+    color: var(--fog);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .testimonial-card:hover::before { color: rgba(255,255,255,0.1); }
+
+  .testimonial-card p {
+    font-size: 17px;
+    line-height: 1.75;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+  }
+  .testimonial-card:hover p { color: var(--paper); }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .author-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .author-info .author-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .testimonial-card:hover .author-name { color: var(--paper); }
+
+  .author-info .author-location {
+    font-size: 13px;
+    opacity: 0.5;
+    margin-top: 2px;
+    transition: color 0.3s;
+  }
+  .testimonial-card:hover .author-location { color: var(--paper); }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: 'ARTINI STUDIO';
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    font-family: var(--font-ui);
+    font-size: 180px;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--fog);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .cta-content h2 em { font-style: italic; color: var(--moss); }
+
+  .cta-content p {
+    font-size: 17px;
+    line-height: 1.8;
+    opacity: 0.6;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-large {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--moss);
+    padding: 18px 40px;
+    border: none;
+    cursor: none;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-large:hover { background: var(--ink); }
+
+  .btn-outline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--moss);
+    background: transparent;
+    padding: 18px 40px;
+    border: 1px solid var(--moss);
+    cursor: none;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-outline:hover { background: var(--moss); color: var(--white); }
+
+  .cta-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-tile {
+    aspect-ratio: 1;
+    transition: transform 0.4s, filter 0.4s;
+  }
+  .cta-tile:hover { transform: scale(1.05); filter: brightness(1.1); z-index: 2; }
+
+  .cta-tile.t1 { background: var(--moss); }
+  .cta-tile.t2 { background: var(--sage); }
+  .cta-tile.t3 { background: var(--fog); }
+  .cta-tile.t4 { background: var(--accent); }
+
+  .cta-tile-inner {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    opacity: 0.6;
+    color: var(--white);
+  }
+  .cta-tile.t3 .cta-tile-inner, .cta-tile.t4 .cta-tile-inner { color: var(--ink); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 80px 48px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .footer-brand .logo {
+    font-family: var(--font-ui);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    margin-bottom: 20px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--paper);
+    opacity: 0.35;
+    font-weight: 300;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.4;
+    margin-bottom: 24px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col ul a {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--paper);
+    opacity: 0.55;
+    text-decoration: none;
+    font-weight: 300;
+    transition: opacity 0.2s;
+  }
+  .footer-col ul a:hover { opacity: 1; }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    opacity: 0.25;
+    text-transform: uppercase;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--sage); }
+
+  /* =============================================
+     RESPONSIVE — Tablet (≤ 1024px)
+     ============================================= */
+  @media (max-width: 1024px) {
+    nav { padding: 20px 28px; }
+    .nav-links { display: none; }
+
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 100px 32px 56px; justify-content: flex-end; }
+    .hero-right { height: 60vw; min-height: 360px; }
+    .hero-image-container { position: relative; height: 100%; }
+
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3) { border-top: 1px solid var(--fog); }
+    .stat-item:nth-child(4) { border-top: 1px solid var(--fog); border-right: none; }
+
+    .section-intro { grid-template-columns: 1fr; gap: 24px; padding: 72px 32px; }
+
+    .plans-section { padding: 72px 32px; }
+    .plans-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .plans-grid { grid-template-columns: 1fr 1fr; }
+    .plan-card:first-child { grid-row: span 1; }
+    .plan-card:first-child .plan-img-sim { min-height: auto; aspect-ratio: 4/3; }
+
+    .diff-section { grid-template-columns: 1fr; padding: 72px 32px; }
+    .diff-left { border-right: none; border-bottom: 1px solid var(--fog); padding-right: 0; padding-bottom: 56px; margin-bottom: 56px; }
+    .diff-right { padding-left: 0; }
+
+    .neuro-section { grid-template-columns: 1fr; padding: 72px 32px; gap: 48px; }
+    .neuro-visual { height: 300px; order: -1; }
+
+    .testimonials { padding: 72px 32px; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+
+    .cta-section { grid-template-columns: 1fr; padding: 72px 32px; gap: 48px; }
+    .cta-section::before { font-size: 120px; }
+
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; padding-bottom: 40px; margin-bottom: 40px; }
+    .footer-brand { grid-column: span 2; }
+    footer { padding: 56px 32px 32px; }
+  }
+
+  /* =============================================
+     RESPONSIVE — Mobile (≤ 640px)
+     ============================================= */
+  @media (max-width: 640px) {
+
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+    a, button { cursor: pointer; }
+
+    /* NAV */
+    nav { padding: 16px 20px; }
+    .nav-cta { padding: 9px 16px; font-size: 10px; }
+
+    /* HERO */
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 88px 20px 48px; }
+    .hero-title { font-size: clamp(44px, 13vw, 68px); }
+    .hero-desc { font-size: 15px; margin-bottom: 36px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .hero-right { height: 75vw; min-height: 280px; }
+    .hero-plan-preview { bottom: 20px; left: 16px; right: 16px; padding: 16px 20px; flex-direction: column; gap: 8px; }
+    .plan-preview-price { text-align: left; }
+
+    /* TICKER */
+    .ticker-item { padding: 0 24px; }
+
+    /* STATS */
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat-item { padding: 32px 24px; }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3) { border-top: 1px solid var(--fog); border-right: 1px solid var(--fog); }
+    .stat-item:nth-child(4) { border-top: 1px solid var(--fog); border-right: none; }
+    .stat-number { font-size: 38px; }
+
+    /* INTRO */
+    .section-intro { grid-template-columns: 1fr; gap: 16px; padding: 56px 20px; }
+
+    /* PLANS */
+    .plans-section { padding: 56px 20px; }
+    .plans-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .plans-filter { flex-wrap: wrap; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .plan-card:first-child { grid-row: span 1; }
+    .plan-card:first-child .plan-img-sim { min-height: auto; aspect-ratio: 4/3; }
+    /* Disable hover overlay on touch */
+    .plan-card-hover { display: none; }
+
+    /* DIFF */
+    .diff-section { grid-template-columns: 1fr; padding: 56px 20px; }
+    .diff-left { border-right: none; border-bottom: 1px solid var(--fog); padding-right: 0; padding-bottom: 48px; margin-bottom: 48px; }
+    .diff-right { padding-left: 0; }
+
+    /* NEURO */
+    .neuro-section { grid-template-columns: 1fr; padding: 56px 20px; gap: 40px; }
+    .neuro-visual { height: 240px; order: -1; }
+    .neuro-pillars { grid-template-columns: 1fr; }
+
+    /* TESTIMONIALS */
+    .testimonials { padding: 56px 20px; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+
+    /* CTA */
+    .cta-section { grid-template-columns: 1fr; padding: 56px 20px; gap: 40px; }
+    .cta-section::before { display: none; }
+    .cta-actions { flex-direction: column; }
+    .btn-large, .btn-outline { text-align: center; }
+
+    /* FOOTER */
+    .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    .footer-brand { grid-column: span 1; }
+    footer { padding: 48px 20px 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ARTINI</div>
+  <ul class="nav-links">
+    <li><a href="#">Plans</a></li>
+    <li><a href="#">Biophilic Design</a></li>
+    <li><a href="#">How It Works</a></li>
+    <li><a href="#">For Builders</a></li>
+  </ul>
+  <button class="nav-cta">Browse Plans</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Biophilic Architecture Plans</div>
+    <h1 class="hero-title">
+      Homes that<br>
+      <em>breathe</em> with<br>
+      <span class="outline">nature</span>
+    </h1>
+    <p class="hero-desc">
+      Ready-made architectural plans designed around biophilic principles and neuroarchitecture research. Built for tropical climates. Delivered worldwide.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Explore Plans</a>
+      <a href="#" class="btn-ghost">How it works</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-container">
+      <div class="hero-image-overlay"></div>
+      <div class="hero-plan-preview">
+        <div class="plan-preview-info">
+          <div class="plan-name">Verdant Bungalow IV</div>
+          <div class="plan-meta">4 bed · 2 bath · 210 m² · Nairobi / Lagos</div>
+        </div>
+        <div class="plan-preview-price">
+          <div class="price">$380</div>
+          <div class="price-label">Complete package</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item"><span>✦</span> Biophilic Design</span>
+    <span class="ticker-item"><span>✦</span> Neuroarchitecture</span>
+    <span class="ticker-item"><span>✦</span> Tropical Climate Ready</span>
+    <span class="ticker-item"><span>✦</span> Nigeria · Kenya · Africa</span>
+    <span class="ticker-item"><span>✦</span> CAD + PDF Delivery</span>
+    <span class="ticker-item"><span>✦</span> 3D Renders Included</span>
+    <span class="ticker-item"><span>✦</span> Biophilic Design</span>
+    <span class="ticker-item"><span>✦</span> Neuroarchitecture</span>
+    <span class="ticker-item"><span>✦</span> Tropical Climate Ready</span>
+    <span class="ticker-item"><span>✦</span> Nigeria · Kenya · Africa</span>
+    <span class="ticker-item"><span>✦</span> CAD + PDF Delivery</span>
+    <span class="ticker-item"><span>✦</span> 3D Renders Included</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item fade-up">
+    <div class="stat-number">48+</div>
+    <div class="stat-label">Ready-made plans</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.1s">
+    <div class="stat-number">12</div>
+    <div class="stat-label">Countries served</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.2s">
+    <div class="stat-number">100%</div>
+    <div class="stat-label">Biophilic certified</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.3s">
+    <div class="stat-number">24h</div>
+    <div class="stat-label">File delivery</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="section-intro">
+  <div class="section-label fade-up">Our philosophy</div>
+  <div class="intro-text fade-up">
+    <h2>Architecture that works <em>with</em> the human brain — not against it</h2>
+    <p>Every plan in our catalog is developed with biophilic design principles and validated by neuroarchitecture research. Natural light, airflow, organic materials, and spatial proportions that reduce stress and increase wellbeing — not as add-ons, but as the foundation of the design.</p>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans-section">
+  <div class="plans-header fade-up">
+    <h2>Featured <em>plans</em></h2>
+    <div class="plans-filter">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Bungalow</button>
+      <button class="filter-btn">Duplex</button>
+      <button class="filter-btn">Maisonette</button>
+    </div>
+  </div>
+
+  <div class="plans-grid">
+    <!-- Card 1 - Featured -->
+    <div class="plan-card">
+      <div class="plan-img-sim img-1"></div>
+      <div class="plan-card-body">
+        <div class="plan-card-top">
+          <span class="plan-tag">Featured · Biophilic</span>
+          <span class="plan-price">$420</span>
+        </div>
+        <div class="plan-name">Canopy Residence</div>
+        <div class="plan-specs">
+          <span class="plan-spec">4 bed</span>
+          <span class="plan-spec">3 bath</span>
+          <span class="plan-spec">240 m²</span>
+          <span class="plan-spec">Tropical</span>
+        </div>
+      </div>
+      <div class="plan-card-hover">
+        <h3>Canopy Residence</h3>
+        <p>Open-plan layout with cross-ventilation corridors, biophilic courtyard, and flat-roof terrace. Optimized for Lagos and Nairobi climates.</p>
+        <a href="#" class="hover-btn">View Plan</a>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="plan-card">
+      <div class="plan-img-sim img-2"></div>
+      <div class="plan-card-body">
+        <div class="plan-card-top">
+          <span class="plan-tag">Bungalow</span>
+          <span class="plan-price">$280</span>
+        </div>
+        <div class="plan-name">Verdant Flat III</div>
+        <div class="plan-specs">
+          <span class="plan-spec">3 bed</span>
+          <span class="plan-spec">2 bath</span>
+          <span class="plan-spec">160 m²</span>
+        </div>
+      </div>
+      <div class="plan-card-hover">
+        <h3>Verdant Flat III</h3>
+        <p>Modern flat-roof bungalow with indoor garden wall, natural light corridors, and open social area.</p>
+        <a href="#" class="hover-btn">View Plan</a>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="plan-card">
+      <div class="plan-img-sim img-3"></div>
+      <div class="plan-card-body">
+        <div class="plan-card-top">
+          <span class="plan-tag">Maisonette</span>
+          <span class="plan-price">$380</span>
+        </div>
+        <div class="plan-name">Terra Maisonette</div>
+        <div class="plan-specs">
+          <span class="plan-spec">4 bed</span>
+          <span class="plan-spec">3 bath</span>
+          <span class="plan-spec">210 m²</span>
+        </div>
+      </div>
+      <div class="plan-card-hover">
+        <h3>Terra Maisonette</h3>
+        <p>Double-storey design with rooftop terrace, natural material palette, and biophilic balcony gardens.</p>
+        <a href="#" class="hover-btn">View Plan</a>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="plan-card">
+      <div class="plan-img-sim img-4"></div>
+      <div class="plan-card-body">
+        <div class="plan-card-top">
+          <span class="plan-tag">Duplex</span>
+          <span class="plan-price">$350</span>
+        </div>
+        <div class="plan-name">Kibo Semi-Duplex</div>
+        <div class="plan-specs">
+          <span class="plan-spec">4 bed</span>
+          <span class="plan-spec">2 bath</span>
+          <span class="plan-spec">195 m²</span>
+        </div>
+      </div>
+      <div class="plan-card-hover">
+        <h3>Kibo Semi-Duplex</h3>
+        <p>Compact semi-duplex with shared courtyard wall, solar-ready roof, and neuro-optimized bedroom orientation.</p>
+        <a href="#" class="hover-btn">View Plan</a>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="plan-card">
+      <div class="plan-img-sim img-5"></div>
+      <div class="plan-card-body">
+        <div class="plan-card-top">
+          <span class="plan-tag">Bungalow · Compact</span>
+          <span class="plan-price">$220</span>
+        </div>
+        <div class="plan-name">Savanna Compact</div>
+        <div class="plan-specs">
+          <span class="plan-spec">3 bed</span>
+          <span class="plan-spec">2 bath</span>
+          <span class="plan-spec">130 m²</span>
+        </div>
+      </div>
+      <div class="plan-card-hover">
+        <h3>Savanna Compact</h3>
+        <p>Affordable entry-level plan with maximum livability. Designed for 1/8 acre plots. Ideal for first-time builders.</p>
+        <a href="#" class="hover-btn">View Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIALS -->
+<section class="diff-section">
+  <div class="diff-left fade-up">
+    <div class="section-label" style="margin-bottom: 32px">Why Artini</div>
+    <h2>More than a plan.<br><em>A complete</em><br>building package.</h2>
+    <p>Every purchase includes everything your builder needs — no surprises, no extra architect fees, no back and forth.</p>
+    <a href="#" class="btn-primary">See what's included</a>
+  </div>
+  <div class="diff-right fade-up">
+    <div class="diff-item">
+      <span class="diff-number">01</span>
+      <div>
+        <h3>Full technical drawings</h3>
+        <p>Floor plans, sections, elevations, and structural notes. PDF + CAD files ready for your contractor.</p>
+      </div>
+    </div>
+    <div class="diff-item">
+      <span class="diff-number">02</span>
+      <div>
+        <h3>Photorealistic 3D renders</h3>
+        <p>See your home before a single block is laid. Exterior and interior renders from multiple angles.</p>
+      </div>
+    </div>
+    <div class="diff-item">
+      <span class="diff-number">03</span>
+      <div>
+        <h3>Materials & quantities list</h3>
+        <p>Complete bill of quantities so you can get accurate quotes from local suppliers from day one.</p>
+      </div>
+    </div>
+    <div class="diff-item">
+      <span class="diff-number">04</span>
+      <div>
+        <h3>Climate adaptation notes</h3>
+        <p>Specific guidance for your region — sun orientation, ventilation strategy, and local material alternatives.</p>
+      </div>
+    </div>
+    <div class="diff-item">
+      <span class="diff-number">05</span>
+      <div>
+        <h3>WhatsApp technical support</h3>
+        <p>Direct access to our architecture team for questions during your build. Real people, not bots.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEURO SECTION -->
+<section class="neuro-section">
+  <div class="neuro-visual">
+    <div class="neuro-circle nc-1"></div>
+    <div class="neuro-circle nc-2"></div>
+    <div class="neuro-circle nc-3"></div>
+    <div class="neuro-dot"></div>
+    <!-- Decorative lines -->
+    <div class="neuro-line" style="width: 80px; transform: rotate(30deg)"></div>
+    <div class="neuro-line" style="width: 120px; transform: rotate(120deg)"></div>
+    <div class="neuro-line" style="width: 60px; transform: rotate(210deg)"></div>
+    <div class="neuro-line" style="width: 100px; transform: rotate(300deg)"></div>
+  </div>
+  <div class="neuro-content fade-up">
+    <div class="section-label">Neuroarchitecture</div>
+    <h2>Designed for how<br>the brain <em>actually</em><br>experiences space</h2>
+    <p>Our partner firm specializes in biophilic design and neuroarchitecture — the science of how spatial environments directly affect stress levels, cognition, sleep quality, and emotional wellbeing. Every plan in our catalog is built on this foundation.</p>
+    <div class="neuro-pillars">
+      <div class="neuro-pillar">
+        <div class="pillar-icon">🌿</div>
+        <h4>Natural materials</h4>
+        <p>Organic textures that reduce cortisol and increase comfort</p>
+      </div>
+      <div class="neuro-pillar">
+        <div class="pillar-icon">☀️</div>
+        <h4>Light & circadian rhythm</h4>
+        <p>Openings positioned for natural light patterns</p>
+      </div>
+      <div class="neuro-pillar">
+        <div class="pillar-icon">🌬️</div>
+        <h4>Natural ventilation</h4>
+        <p>Cross-ventilation by design, not as an afterthought</p>
+      </div>
+      <div class="neuro-pillar">
+        <div class="pillar-icon">🔲</div>
+        <h4>Spatial proportions</h4>
+        <p>Ceiling heights and ratios that feel instinctively right</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <h2 class="fade-up">Built by <em>real people</em></h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <p>I bought the Verdant Flat III plan and my contractor said it was the most complete set of drawings he'd ever worked from. The WhatsApp support was a game changer.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AO</div>
+        <div class="author-info">
+          <div class="author-name">Adebayo O.</div>
+          <div class="author-location">Lagos, Nigeria</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card fade-up" style="transition-delay:0.1s">
+      <p>Finally, house plans designed for our climate. The cross-ventilation in the Canopy plan means we barely need air conditioning. Our electricity bill dropped significantly.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">WK</div>
+        <div class="author-info">
+          <div class="author-name">Wanjiru K.</div>
+          <div class="author-location">Nairobi, Kenya</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card fade-up" style="transition-delay:0.2s">
+      <p>As a developer building 12 units, the bulk licensing made complete financial sense. The biophilic angle also helped us sell the units faster — buyers love the concept.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">KM</div>
+        <div class="author-info">
+          <div class="author-name">Kofi M.</div>
+          <div class="author-location">Accra, Ghana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-content fade-up">
+    <div class="section-label" style="margin-bottom:32px">Get started</div>
+    <h2>Your home.<br><em>Designed with</em><br>nature in mind.</h2>
+    <p>Browse our catalog of biophilic house plans. Download, build, and live in a space that supports your wellbeing — starting today.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-large">Browse All Plans</a>
+      <a href="#" class="btn-outline">Talk to us on WhatsApp</a>
+    </div>
+  </div>
+  <div class="cta-visual fade-up">
+    <div class="cta-tile t1"><div class="cta-tile-inner">Biophilic</div></div>
+    <div class="cta-tile t2"><div class="cta-tile-inner">Natural</div></div>
+    <div class="cta-tile t3"><div class="cta-tile-inner" style="color:var(--ink)">Tropical</div></div>
+    <div class="cta-tile t4"><div class="cta-tile-inner" style="color:var(--ink)">Organic</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">ARTINI STUDIO</div>
+      <p>Biophilic architecture plans for tropical climates. Developed with neuroarchitecture research. Delivered worldwide.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Plans</h4>
+      <ul>
+        <li><a href="#">Bungalows</a></li>
+        <li><a href="#">Maisonettes</a></li>
+        <li><a href="#">Duplexes</a></li>
+        <li><a href="#">Terrace Houses</a></li>
+        <li><a href="#">Compact Plans</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Biophilic Design</a></li>
+        <li><a href="#">For Builders</a></li>
+        <li><a href="#">Licensing</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">How it works</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Refund policy</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Artini. All rights reserved.</p>
+    <p>Designed for Africa · Built for the World</p>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  // Smooth ring follow
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Cursor scale on hover
+  document.querySelectorAll('a, button, .plan-card, .diff-item, .testimonial-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursorRing.style.width = '56px';
+      cursorRing.style.height = '56px';
+      cursorRing.style.opacity = '0.8';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width = '36px';
+      cursorRing.style.height = '36px';
+      cursorRing.style.opacity = '0.5';
+    });
+  });
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Scroll animations
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  fadeEls.forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(245, 240, 232, 0.92)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.mixBlendMode = 'normal';
+      nav.style.borderBottom = '1px solid rgba(0,0,0,0.06)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.mixBlendMode = 'multiply';
+      nav.style.borderBottom = 'none';
+    }
+  });
+</script>
+</body>
+</html>

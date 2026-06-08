@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Canopy Residence — ARCHAIVE</title>
+<title>Canopy Residence — ARTINI STUDIO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -267,10 +267,11 @@ nav {
 
 .product-subtitle {
   font-size: 17px;
-  font-weight: 300;
-  opacity: .5;
+  font-weight: 400;
+  opacity: .75;
   margin-bottom: 40px;
   font-style: italic;
+  color: var(--moss);
 }
 
 /* Specs grid */
@@ -834,6 +835,155 @@ footer {
 ::-webkit-scrollbar { width:3px; }
 ::-webkit-scrollbar-track { background:var(--paper); }
 ::-webkit-scrollbar-thumb { background:var(--sage); }
+
+/* =============================================
+   RESPONSIVE — Tablet (≤ 1024px)
+   ============================================= */
+@media (max-width: 1024px) {
+  nav { padding: 20px 28px; }
+  .nav-breadcrumb { display: none; }
+
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+
+  .gallery {
+    position: relative;
+    top: auto;
+    height: 60vw;
+    min-height: 320px;
+    max-height: 520px;
+  }
+
+  .product-info { padding: 40px 32px 60px; overflow-y: visible; }
+
+  .specs-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .details-section { padding: 72px 32px; }
+  .details-grid { grid-template-columns: 1fr; gap: 48px; }
+  .details-sidebar { order: -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  .reviews-section { padding: 64px 32px; }
+  .reviews-grid { grid-template-columns: 1fr 1fr; }
+
+  .related-section { padding: 64px 32px; }
+  .related-grid { grid-template-columns: 1fr 1fr; }
+
+  .sticky-buy { padding: 14px 28px; }
+
+  footer { padding: 32px 28px; }
+  .footer-links { gap: 20px; }
+}
+
+/* =============================================
+   RESPONSIVE — Mobile (≤ 640px)
+   ============================================= */
+@media (max-width: 640px) {
+
+  /* Disable custom cursor on touch */
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+  a, button { cursor: pointer; }
+
+  /* NAV */
+  nav { padding: 16px 20px; }
+  .nav-wishlist { display: none; }
+  .nav-buy { padding: 9px 16px; font-size: 10px; }
+
+  /* HERO / GALLERY */
+  .gallery {
+    height: 72vw;
+    min-height: 260px;
+    max-height: 400px;
+  }
+
+  .gallery-thumbs { height: 72px; }
+  .thumb-label { display: none; }
+
+  .gallery-tag { top: 16px; left: 16px; font-size: 8px; padding: 5px 10px; }
+  .gallery-counter { bottom: 16px; right: 16px; font-size: 10px; }
+
+  /* PRODUCT INFO */
+  .product-info { padding: 28px 20px 80px; }
+
+  .product-meta { flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .meta-tag { font-size: 8px; padding: 4px 10px; }
+
+  .product-title { font-size: clamp(36px, 10vw, 52px); margin-bottom: 6px; }
+  .product-subtitle { font-size: 15px; margin-bottom: 28px; }
+
+  .specs-grid { grid-template-columns: repeat(2, 1fr); }
+  .spec-cell:nth-child(2) { border-right: none; }
+  .spec-cell:nth-child(3) { border-right: 1px solid var(--fog); border-top: 1px solid var(--fog); }
+  .spec-cell:nth-child(4) { border-top: 1px solid var(--fog); }
+  .spec-value { font-size: 22px; }
+
+  .price-block { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .price-amount { font-size: 44px; }
+  .price-note { text-align: left; max-width: none; }
+
+  .package-items { grid-template-columns: 1fr; gap: 6px; }
+
+  .cta-group { flex-direction: column; }
+  .btn-whatsapp { justify-content: center; }
+
+  .climate-badge { padding: 14px 16px; gap: 12px; }
+  .badge-icon { font-size: 18px; }
+  .badge-text strong { font-size: 12px; }
+
+  /* STICKY BUY — simplified on mobile */
+  .sticky-buy {
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  .sticky-buy-info .sb-specs { display: none; }
+  .sticky-buy-price { font-size: 24px; }
+  .sticky-buy-btn { padding: 12px 20px; font-size: 10px; white-space: nowrap; }
+
+  /* DETAILS */
+  .details-section { padding: 56px 20px; }
+  .details-grid { grid-template-columns: 1fr; gap: 40px; }
+
+  .details-sidebar {
+    order: -1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* Hide less critical sidebar cards on mobile */
+  .details-sidebar .sidebar-card:nth-child(3) { display: none; }
+
+  .details-title { font-size: clamp(28px, 8vw, 40px); }
+  .details-body { font-size: 15px; }
+
+  .fp-tabs { width: 100%; }
+  .fp-tab { flex: 1; text-align: center; font-size: 9px; padding: 10px 8px; }
+
+  .bio-item { grid-template-columns: 40px 1fr; gap: 14px; }
+  .bio-score { display: none; }
+  .bio-icon { width: 36px; height: 36px; font-size: 16px; }
+
+  /* REVIEWS */
+  .reviews-section { padding: 48px 20px; }
+  .reviews-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .rating-summary { text-align: left; display: flex; align-items: center; gap: 16px; }
+  .rating-big { font-size: 40px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+
+  /* RELATED */
+  .related-section { padding: 48px 20px; }
+  .related-grid { grid-template-columns: 1fr; }
+  .related-img { aspect-ratio: 16/9; }
+
+  /* FOOTER */
+  footer {
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px 20px;
+    text-align: center;
+  }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .footer-copy { order: 3; }
+}
 </style>
 </head>
 <body>
@@ -853,7 +1003,7 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">ARCHAIVE</a>
+  <a href="#" class="nav-logo">ARTINI STUDIO</a>
   <div class="nav-breadcrumb">
     <span>Plans</span> / <span>Bungalows</span> / Canopy Residence
   </div>
@@ -1226,7 +1376,7 @@ footer {
     </div>
     <div class="review-card">
       <div class="review-stars">★★★★☆</div>
-      <p class="review-text">Used the multi-use license for 8 units in our development. The biophilic angle helped us sell at 15% above market. Will use Archaive for our next project.</p>
+      <p class="review-text">Used the multi-use license for 8 units in our development. The biophilic angle helped us sell at 15% above market. Will use Artini for our next project.</p>
       <div class="review-author">
         <div class="review-avatar">KM</div>
         <div class="review-author-info">
@@ -1274,7 +1424,7 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">ARCHAIVE</div>
+  <div class="footer-logo">ARTINI STUDIO</div>
   <ul class="footer-links">
     <li><a href="#">Plans</a></li>
     <li><a href="#">How it works</a></li>
@@ -1282,7 +1432,7 @@ footer {
     <li><a href="#">WhatsApp</a></li>
     <li><a href="#">Refund policy</a></li>
   </ul>
-  <div class="footer-copy">© 2025 Archaive</div>
+  <div class="footer-copy">© 2025 Artini Studio</div>
 </footer>
 
 <script>
